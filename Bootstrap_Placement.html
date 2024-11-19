@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2024-11-19">
+
+<title>Bootstrap_Simulation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Bootstrap_Placement_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Bootstrap_Placement_files/libs/quarto-html/quarto.js"></script>
+<script src="Bootstrap_Placement_files/libs/quarto-html/popper.min.js"></script>
+<script src="Bootstrap_Placement_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Bootstrap_Placement_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Bootstrap_Placement_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Bootstrap_Placement_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Bootstrap_Placement_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Bootstrap_Placement_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Bootstrap_Placement_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Bootstrap_Simulation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 19, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="aim" class="level4">
+<h4 class="anchored" data-anchor-id="aim">Aim</h4>
+<p>To find the smallest number of simulations (m) and sample size (n) needed to accurately calculate bootstrap parameters for different distributions with known parameters.</p>
+<p><img src="images/clipboard-1750255435.png" class="img-fluid" width="582"></p>
+</section>
+<section id="methods" class="level4">
+<h4 class="anchored" data-anchor-id="methods">Methods</h4>
+<p><img src="images/clipboard-2829746797.png" class="img-fluid" width="444"></p>
+</section>
+<section id="parameters" class="level4">
+<h4 class="anchored" data-anchor-id="parameters">Parameters</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>m_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">200</span>, <span class="dv">500</span>, <span class="dv">1000</span>, <span class="dv">2000</span>, <span class="dv">5000</span>, <span class="dv">10000</span>) <span class="co"># number of simulations</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#m_list &lt;- list(20, 50, 100, 200, 500, 1000) # number of simulations</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>n_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">1000</span>) <span class="co"># sample size</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="distributions-of-interest" class="level4">
+<h4 class="anchored" data-anchor-id="distributions-of-interest">Distributions of Interest</h4>
+<ol type="1">
+<li><p><strong>Normal Distribution</strong><br>
+The probability density function (PDF) of a normal distribution is given by:<br>
+<span class="math display">\[
+f(x; \mu, \sigma) = \frac{1}{\sigma \sqrt{2\pi}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
+\]</span><br>
+where ( ) is the mean and ( ) is the standard deviation.</p></li>
+<li><p><strong>t-Distribution</strong><br>
+The PDF of the t-distribution is:<br>
+<span class="math display">\[
+f(x; \nu) = \frac{\Gamma\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi} \Gamma\left(\frac{\nu}{2}\right)} \left(1 + \frac{x^2}{\nu}\right)^{-\frac{\nu+1}{2}}
+\]</span><br>
+where ( ) is the degrees of freedom and ( ) is the gamma function.</p></li>
+<li><p><strong>Gamma Distribution</strong><br>
+The PDF of the gamma distribution is:<br>
+<span class="math display">\[
+f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha-1} e^{-\beta x}}{\Gamma(\alpha)}
+\]</span><br>
+where ( ) is the shape parameter and ( ) is the rate parameter.</p></li>
+<li><p><strong>Lognormal Distribution</strong><br>
+The PDF of the lognormal distribution is:<br>
+<span class="math display">\[
+f(x; \mu, \sigma) = \frac{1}{x \sigma \sqrt{2\pi}} e^{-\frac{(\ln x - \mu)^2}{2\sigma^2}}
+\]</span><br>
+where ( ) and ( ) are the mean and standard deviation of the variable’s natural logarithm.</p></li>
+<li><p><strong>Weibull Distribution</strong><br>
+The PDF of the Weibull distribution is:<br>
+<span class="math display">\[
+f(x; \lambda, k) = \frac{k}{\lambda} \left(\frac{x}{\lambda}\right)^{k-1} e^{-\left(\frac{x}{\lambda}\right)^k}
+\]</span><br>
+where ( ) is the scale parameter and ( k ) is the shape parameter.</p></li>
+</ol>
+</section>
+<section id="simulate-distributions" class="level4">
+<h4 class="anchored" data-anchor-id="simulate-distributions">Simulate Distributions</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Set params here</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>simulate_distributions <span class="ot">&lt;-</span> <span class="cf">function</span>(distribution, n) {</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span>(distribution,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">"normal"</span> <span class="ot">=</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">"t"</span> <span class="ot">=</span> <span class="fu">rt</span>(n, <span class="at">df =</span> <span class="dv">10</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>         <span class="st">"gamma"</span> <span class="ot">=</span> <span class="fu">rgamma</span>(n, <span class="at">shape =</span> <span class="dv">2</span>, <span class="at">rate =</span> <span class="dv">1</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>         <span class="st">"lognormal"</span> <span class="ot">=</span> <span class="fu">rlnorm</span>(n, <span class="at">meanlog =</span> <span class="dv">0</span>, <span class="at">sdlog =</span> <span class="dv">1</span>),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>         <span class="st">"weibull"</span> <span class="ot">=</span> <span class="fu">rweibull</span>(n, <span class="at">shape =</span> <span class="dv">2</span>, <span class="at">scale =</span> <span class="dv">1</span>))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>distributions <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"normal"</span>, <span class="st">"t"</span>, <span class="st">"gamma"</span>, <span class="st">"lognormal"</span>, <span class="st">"weibull"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="estimators-of-interest" class="level4">
+<h4 class="anchored" data-anchor-id="estimators-of-interest">Estimators of Interest</h4>
+<section id="t-interval" class="level5">
+<h5 class="anchored" data-anchor-id="t-interval">1) T-Interval</h5>
+<p>The t-interval is calculated as the 2.5th and 97.5th percentiles of the bootstrap sample means:</p>
+<p><span class="math display">\[
+  \text{T-Interval} = \text{Quantile}(\text{means}, \{0.025, 0.975\})
+  \]</span></p>
+</section>
+<section id="likelihood-interval-based-on-mle" class="level5">
+<h5 class="anchored" data-anchor-id="likelihood-interval-based-on-mle">2) Likelihood Interval Based on MLE</h5>
+<p>The likelihood interval based on the maximum likelihood estimate (MLE) uses the sample mean (( )) and the standard error (( SE )):</p>
+<p><span class="math display">\[
+  \text{MLE} = \frac{1}{n} \sum_{i=1}^n x_i
+  \]</span></p>
+<p><span class="math display">\[
+  SE = \frac{\text{SD}(\text{data})}{\sqrt{n}}
+  \]</span></p>
+<p>The interval is then:</p>
+<p><span class="math display">\[
+  \text{Likelihood Interval (MLE)} = \left[ \text{MLE} - 1.96 \times SE, \text{MLE} + 1.96 \times SE \right]
+  \]</span></p>
+</section>
+<section id="likelihood-interval-based-on-likelihood-ratio" class="level5">
+<h5 class="anchored" data-anchor-id="likelihood-interval-based-on-likelihood-ratio">3) Likelihood Interval Based on Likelihood Ratio</h5>
+<p>The likelihood interval based on the likelihood ratio uses the negative log-likelihood function: <span class="math display">\[
+  \ell(\mu) = -\sum_{i=1}^n \log \left( f(x_i; \mu, \sigma) \right)
+  \]</span></p>
+<p>Where ( f(x_i; , ) ) is the normal PDF:</p>
+<p><span class="math display">\[
+  f(x_i; \mu, \sigma) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left( -\frac{(x_i - \mu)^2}{2\sigma^2} \right)
+  \]</span></p>
+<p>The MLE for ( ) minimizes ( () ):</p>
+<p><span class="math display">\[
+  \hat{\mu} = \arg\min_{\mu} \ell(\mu)
+  \]</span></p>
+<p>The likelihood interval is calculated as:</p>
+<p><span class="math display">\[
+  \text{Likelihood Interval (Likelihood Ratio)} = \left[ \hat{\mu} - 1.96 \times SE, \hat{\mu} + 1.96 \times SE \right]
+  \]</span></p>
+</section>
+<section id="non-parametric-bootstrap-interval" class="level5">
+<h5 class="anchored" data-anchor-id="non-parametric-bootstrap-interval">4) Non-Parametric Bootstrap Interval</h5>
+<p>The non-parametric bootstrap interval is calculated as the 2.5th and 97.5th percentiles of the bootstrap sample means:</p>
+<p><span class="math display">\[
+  \text{Non-Parametric Bootstrap Interval} = \text{Quantile}(\text{means}, {0.025, 0.975})
+  \]</span></p>
+</section>
+</section>
+<section id="functions-for-estimators" class="level4">
+<h4 class="anchored" data-anchor-id="functions-for-estimators">Functions for Estimators</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1) T-Interval</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>calculate_t_interval <span class="ot">&lt;-</span> <span class="cf">function</span>(means) {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quantile</span>(means, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 2) Likelihood Interval Based on MLE</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>calculate_likelihood_interval_mle <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  mle <span class="ot">&lt;-</span> <span class="fu">mean</span>(data)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(data)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  se <span class="ot">&lt;-</span> <span class="fu">sd</span>(data) <span class="sc">/</span> <span class="fu">sqrt</span>(n)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(mle <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se, mle <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 3) Likelihood Interval Based on Likelihood Ratio</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>calculate_likelihood_interval_lr <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  log_likelihood <span class="ot">&lt;-</span> <span class="cf">function</span>(mean) {</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">sum</span>(<span class="fu">dnorm</span>(data, <span class="at">mean =</span> mean, <span class="at">sd =</span> <span class="fu">sd</span>(data), <span class="at">log =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  mle_mean <span class="ot">&lt;-</span> <span class="fu">optimize</span>(log_likelihood, <span class="at">interval =</span> <span class="fu">range</span>(data))<span class="sc">$</span>minimum</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(data)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  se <span class="ot">&lt;-</span> <span class="fu">sd</span>(data) <span class="sc">/</span> <span class="fu">sqrt</span>(n)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(mle_mean <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> se, mle_mean <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> se)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 4) Non-Parametric Bootstrap Interval</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>calculate_nonparametric_interval <span class="ot">&lt;-</span> <span class="cf">function</span>(means) {</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quantile</span>(means, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="expected-analytic-values" class="level4">
+<h4 class="anchored" data-anchor-id="expected-analytic-values">Expected Analytic Values</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define expected analytic values for each distribution, calculating mean and SE</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>expected_analytic_values <span class="ot">&lt;-</span> <span class="cf">function</span>(dist_name, n) {</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">switch</span>(dist_name,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">"normal"</span> <span class="ot">=</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="dv">0</span>, <span class="at">se =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="fu">sqrt</span>(n)),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">"t"</span> <span class="ot">=</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="dv">0</span>, <span class="at">se =</span> <span class="fu">sqrt</span>(<span class="dv">10</span> <span class="sc">/</span> (<span class="dv">10</span> <span class="sc">-</span> <span class="dv">2</span>)) <span class="sc">/</span> <span class="fu">sqrt</span>(n)),  <span class="co"># SE for t with df = 10</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">"gamma"</span> <span class="ot">=</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="dv">2</span> <span class="sc">/</span> <span class="dv">1</span>, <span class="at">se =</span> <span class="fu">sqrt</span>(<span class="dv">2</span> <span class="sc">/</span> (<span class="dv">1</span><span class="sc">^</span><span class="dv">2</span>)) <span class="sc">/</span> <span class="fu">sqrt</span>(n)),  <span class="co"># Shape=2, Rate=1</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">"lognormal"</span> <span class="ot">=</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">exp</span>(<span class="dv">0</span> <span class="sc">+</span> (<span class="dv">1</span><span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="dv">2</span>), <span class="at">se =</span> <span class="fu">sqrt</span>((<span class="fu">exp</span>(<span class="dv">1</span><span class="sc">^</span><span class="dv">2</span>) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="fu">exp</span>(<span class="dv">2</span> <span class="sc">*</span> <span class="dv">0</span> <span class="sc">+</span> <span class="dv">1</span><span class="sc">^</span><span class="dv">2</span>)) <span class="sc">/</span> <span class="fu">sqrt</span>(n)),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>         <span class="st">"weibull"</span> <span class="ot">=</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="dv">2</span> <span class="sc">*</span> <span class="fu">gamma</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>), <span class="at">se =</span> <span class="fu">sqrt</span>((<span class="dv">2</span><span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> (<span class="fu">gamma</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">/</span> <span class="dv">2</span>) <span class="sc">-</span> (<span class="fu">gamma</span>(<span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span>))) <span class="sc">/</span> <span class="fu">sqrt</span>(n))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate a table of analytic values</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>generate_analytic_table <span class="ot">&lt;-</span> <span class="cf">function</span>(m_list, n_list, distributions) {</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  analytic_table <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(n_list, <span class="cf">function</span>(n_value) {</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(distributions, <span class="cf">function</span>(dist_name) {</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>      analytic_values <span class="ot">&lt;-</span> <span class="fu">expected_analytic_values</span>(dist_name, n_value)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>      analytic_mean <span class="ot">&lt;-</span> analytic_values<span class="sc">$</span>mean</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>      analytic_se <span class="ot">&lt;-</span> analytic_values<span class="sc">$</span>se</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>      analytic_t_interval <span class="ot">&lt;-</span> <span class="fu">c</span>(analytic_mean <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> analytic_se, analytic_mean <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> analytic_se)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>      <span class="fu">data.frame</span>(</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">n =</span> n_value,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">distribution =</span> dist_name,</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">analytic_mean =</span> analytic_mean,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">analytic_se =</span> analytic_se,</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">analytic_t_interval_lower =</span> analytic_t_interval[<span class="dv">1</span>],</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">analytic_t_interval_upper =</span> analytic_t_interval[<span class="dv">2</span>]</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    }))</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  }))</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(analytic_table)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>analytic_table <span class="ot">&lt;-</span> <span class="fu">generate_analytic_table</span>(m_list, n_list, distributions)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the analytic table</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(analytic_table,<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   n distribution analytic_mean analytic_se analytic_t_interval_lower
+1 10       normal      0.000000   0.3162278                -0.6198064
+2 10            t      0.000000   0.3535534                -0.6929646
+3 10        gamma      2.000000   0.4472136                 1.1234614
+4 10    lognormal      1.648721   0.6834306                 0.3091972
+5 10      weibull      1.772454   0.2929859                 1.1982015
+  analytic_t_interval_upper
+1                 0.6198064
+2                 0.6929646
+3                 2.8765386
+4                 2.9882453
+5                 2.3467062</code></pre>
+</div>
+</div>
+</section>
+<section id="bootstrap-function" class="level4">
+<h4 class="anchored" data-anchor-id="bootstrap-function">Bootstrap Function</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Usage within the bootstrap_intervals function</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>bootstrap_intervals <span class="ot">&lt;-</span> <span class="cf">function</span>(data, m) {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(data)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  means <span class="ot">&lt;-</span> <span class="fu">numeric</span>(m)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>m) {</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    sample_data <span class="ot">&lt;-</span> <span class="fu">sample</span>(data, <span class="at">size =</span> n, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    means[i] <span class="ot">&lt;-</span> <span class="fu">mean</span>(sample_data)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">t_interval =</span> <span class="fu">calculate_t_interval</span>(means),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">likelihood_interval_mle =</span> <span class="fu">calculate_likelihood_interval_mle</span>(data),</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">likelihood_interval_lr =</span> <span class="fu">calculate_likelihood_interval_lr</span>(data),</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">nonparametric_interval =</span> <span class="fu">calculate_nonparametric_interval</span>(means)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="iterate-through-all-combinations-of-each-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="iterate-through-all-combinations-of-each-distribution">Iterate through all combinations of each distribution</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (m <span class="cf">in</span> m_list) {</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (n <span class="cf">in</span> n_list) {</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (dist_name <span class="cf">in</span> distributions) {</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">set.seed</span>(<span class="dv">123</span>)  <span class="co"># Ensure reproducibility</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>      data <span class="ot">&lt;-</span> <span class="fu">simulate_distributions</span>(dist_name, n)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>      intervals <span class="ot">&lt;-</span> <span class="fu">bootstrap_intervals</span>(data, m)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      results[[<span class="fu">paste</span>(<span class="st">"m"</span>, m, <span class="st">"n"</span>, n, dist_name, <span class="at">sep =</span> <span class="st">"_"</span>)]] <span class="ot">&lt;-</span> intervals</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="bootstrap-results" class="level4">
+<h4 class="anchored" data-anchor-id="bootstrap-results">Bootstrap Results</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define expected parameter values for each distribution</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>distribution_params <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">normal =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">t =</span> <span class="fu">list</span>(<span class="at">df =</span> <span class="dv">10</span>),</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">gamma =</span> <span class="fu">list</span>(<span class="at">shape =</span> <span class="dv">2</span>, <span class="at">rate =</span> <span class="dv">1</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">lognormal =</span> <span class="fu">list</span>(<span class="at">meanlog =</span> <span class="dv">0</span>, <span class="at">sdlog =</span> <span class="dv">1</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">weibull =</span> <span class="fu">list</span>(<span class="at">shape =</span> <span class="dv">2</span>, <span class="at">scale =</span> <span class="dv">1</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert results list to a data frame with parameter values</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>results_table <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">names</span>(results), <span class="cf">function</span>(name) {</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract m, n, and distribution from the name</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  split_name <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(name, <span class="st">"_"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  m_value <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(split_name[<span class="dv">2</span>])</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  n_value <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(split_name[<span class="dv">4</span>])</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  dist_name <span class="ot">&lt;-</span> split_name[<span class="dv">5</span>]</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract intervals</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  intervals <span class="ot">&lt;-</span> results[[name]]</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Extract parameters for the distribution</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  params <span class="ot">&lt;-</span> distribution_params[[dist_name]]</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  BS_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(intervals<span class="sc">$</span>t_interval)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a row</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>(</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">m =</span> m_value,</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> n_value,</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">distribution =</span> dist_name,</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">expected_params =</span> <span class="fu">paste</span>(<span class="fu">names</span>(params), <span class="fu">unlist</span>(params), <span class="at">sep =</span> <span class="st">"="</span>, <span class="at">collapse =</span> <span class="st">", "</span>),</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">bs_mean =</span> BS_mean,</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">t_interval_lower =</span> intervals<span class="sc">$</span>t_interval[<span class="dv">1</span>],</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">t_interval_upper =</span> intervals<span class="sc">$</span>t_interval[<span class="dv">2</span>],</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">likelihood_mle_lower =</span> intervals<span class="sc">$</span>likelihood_interval_mle[<span class="dv">1</span>],</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">likelihood_mle_upper =</span> intervals<span class="sc">$</span>likelihood_interval_mle[<span class="dv">2</span>],</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">likelihood_lr_lower =</span> intervals<span class="sc">$</span>likelihood_interval_lr[<span class="dv">1</span>],</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">likelihood_lr_upper =</span> intervals<span class="sc">$</span>likelihood_interval_lr[<span class="dv">2</span>],</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">nonparametric_lower =</span> intervals<span class="sc">$</span>nonparametric_interval[<span class="dv">1</span>],</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">nonparametric_upper =</span> intervals<span class="sc">$</span>nonparametric_interval[<span class="dv">2</span>]</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the table</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(results_table,<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        m  n distribution    expected_params    bs_mean t_interval_lower
+2.5%  200 10       normal       mean=0, sd=1 0.08382257       -0.4757399
+2.5%1 200 10            t              df=10 0.08037697       -0.5735814
+2.5%2 200 10        gamma    shape=2, rate=1 1.77881286        0.9761261
+2.5%3 200 10    lognormal meanlog=0, sdlog=1 1.76782387        0.6961665
+2.5%4 200 10      weibull   shape=2, scale=1 0.79270562        0.5438618
+      t_interval_upper likelihood_mle_lower likelihood_mle_upper
+2.5%         0.6433850           -0.5165358            0.6657871
+2.5%1        0.7343354           -0.7777221            0.8275486
+2.5%2        2.5814996            0.9101920            2.7482641
+2.5%3        2.8394813            0.5287796            2.8507046
+2.5%4        1.0415495            0.4887924            1.0513919
+      likelihood_lr_lower likelihood_lr_upper nonparametric_lower
+2.5%           -0.5165358           0.6657871          -0.4757399
+2.5%1          -0.7777221           0.8275486          -0.5735814
+2.5%2           0.9101920           2.7482641           0.9761261
+2.5%3           0.5287796           2.8507046           0.6961665
+2.5%4           0.4887924           1.0513919           0.5438618
+      nonparametric_upper
+2.5%            0.6433850
+2.5%1           0.7343354
+2.5%2           2.5814996
+2.5%3           2.8394813
+2.5%4           1.0415495</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the table as a CSV file</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(results_table, <span class="st">"results_table_with_params.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="combine-expected-and-analytic-values" class="level4">
+<h4 class="anchored" data-anchor-id="combine-expected-and-analytic-values">Combine Expected and Analytic Values</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Function to combine bootstrap and analytic tables</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>combine_bootstrap_and_analytic <span class="ot">&lt;-</span> <span class="cf">function</span>(bootstrap_results, analytic_table) {</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Iterate through bootstrap results and match with analytic values</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  combined_table <span class="ot">&lt;-</span> <span class="fu">do.call</span>(rbind, <span class="fu">lapply</span>(<span class="fu">names</span>(bootstrap_results), <span class="cf">function</span>(name) {</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract m, n, and distribution from the name</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    split_name <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(name, <span class="st">"_"</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    m_value <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(split_name[<span class="dv">2</span>])</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    n_value <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(split_name[<span class="dv">4</span>])</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    dist_name <span class="ot">&lt;-</span> split_name[<span class="dv">5</span>]</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract bootstrap intervals</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    intervals <span class="ot">&lt;-</span> bootstrap_results[[name]]</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    BS_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(intervals<span class="sc">$</span>t_interval)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Match with analytic values</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    analytic_row <span class="ot">&lt;-</span> analytic_table[</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>      analytic_table<span class="sc">$</span>n <span class="sc">==</span> n_value <span class="sc">&amp;</span> analytic_table<span class="sc">$</span>distribution <span class="sc">==</span> dist_name, ]</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a combined row</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">m =</span> m_value,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">n =</span> n_value,</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">distribution =</span> dist_name,</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">analytic_mean =</span> analytic_row<span class="sc">$</span>analytic_mean,</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">analytic_se =</span> analytic_row<span class="sc">$</span>analytic_se,</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">analytic_t_interval_lower =</span> analytic_row<span class="sc">$</span>analytic_t_interval_lower,</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">analytic_t_interval_upper =</span> analytic_row<span class="sc">$</span>analytic_t_interval_upper,</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">bs_mean =</span> BS_mean,</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">t_interval_lower =</span> intervals<span class="sc">$</span>t_interval[<span class="dv">1</span>],</span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">t_interval_upper =</span> intervals<span class="sc">$</span>t_interval[<span class="dv">2</span>],</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">likelihood_mle_lower =</span> intervals<span class="sc">$</span>likelihood_interval_mle[<span class="dv">1</span>],</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">likelihood_mle_upper =</span> intervals<span class="sc">$</span>likelihood_interval_mle[<span class="dv">2</span>],</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">likelihood_lr_lower =</span> intervals<span class="sc">$</span>likelihood_interval_lr[<span class="dv">1</span>],</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">likelihood_lr_upper =</span> intervals<span class="sc">$</span>likelihood_interval_lr[<span class="dv">2</span>],</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">nonparametric_lower =</span> intervals<span class="sc">$</span>nonparametric_interval[<span class="dv">1</span>],</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">nonparametric_upper =</span> intervals<span class="sc">$</span>nonparametric_interval[<span class="dv">2</span>]</span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>  }))</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(combined_table)</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a><span class="co"># combine tables</span></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>combined_table <span class="ot">&lt;-</span> <span class="fu">combine_bootstrap_and_analytic</span>(results, analytic_table)</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Rearrange columns for better comparison</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>combined_table <span class="ot">&lt;-</span> combined_table[, <span class="fu">c</span>(</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>  <span class="st">"m"</span>, <span class="st">"n"</span>, <span class="st">"distribution"</span>,</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>  <span class="st">"analytic_mean"</span>, <span class="st">"bs_mean"</span>, </span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>  <span class="st">"t_interval_lower"</span>, <span class="st">"analytic_t_interval_lower"</span>, <span class="st">"t_interval_upper"</span>, <span class="st">"analytic_t_interval_upper"</span>,</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>  <span class="st">"analytic_se"</span>,</span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>  <span class="st">"likelihood_mle_lower"</span>, <span class="st">"likelihood_lr_lower"</span>, <span class="st">"nonparametric_lower"</span>,</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>  <span class="st">"likelihood_mle_upper"</span>, <span class="st">"likelihood_lr_upper"</span>, <span class="st">"nonparametric_upper"</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>)]</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Re-name columns with BS results to include 'BS' prefix</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(combined_table) <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">"^(t_interval|likelihood_mle|likelihood_lr|nonparametric)_"</span>, <span class="st">"BS_</span><span class="sc">\\</span><span class="st">1_"</span>, <span class="fu">colnames</span>(combined_table))</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a><span class="co"># Save the rearranged table as a CSV file</span></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(combined_table, <span class="st">"rearranged_combined_bootstrap_analytic_table.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the combined table</span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">head</span>(combined_table,<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        m  n distribution analytic_mean    bs_mean BS_t_interval_lower
+2.5%  200 10       normal      0.000000 0.08382257          -0.4757399
+2.5%1 200 10            t      0.000000 0.08037697          -0.5735814
+2.5%2 200 10        gamma      2.000000 1.77881286           0.9761261
+2.5%3 200 10    lognormal      1.648721 1.76782387           0.6961665
+2.5%4 200 10      weibull      1.772454 0.79270562           0.5438618
+      analytic_t_interval_lower BS_t_interval_upper analytic_t_interval_upper
+2.5%                 -0.6198064           0.6433850                 0.6198064
+2.5%1                -0.6929646           0.7343354                 0.6929646
+2.5%2                 1.1234614           2.5814996                 2.8765386
+2.5%3                 0.3091972           2.8394813                 2.9882453
+2.5%4                 1.1982015           1.0415495                 2.3467062
+      analytic_se BS_likelihood_mle_lower BS_likelihood_lr_lower
+2.5%    0.3162278              -0.5165358             -0.5165358
+2.5%1   0.3535534              -0.7777221             -0.7777221
+2.5%2   0.4472136               0.9101920              0.9101920
+2.5%3   0.6834306               0.5287796              0.5287796
+2.5%4   0.2929859               0.4887924              0.4887924
+      BS_nonparametric_lower BS_likelihood_mle_upper BS_likelihood_lr_upper
+2.5%              -0.4757399               0.6657871              0.6657871
+2.5%1             -0.5735814               0.8275486              0.8275486
+2.5%2              0.9761261               2.7482641              2.7482641
+2.5%3              0.6961665               2.8507046              2.8507046
+2.5%4              0.5438618               1.0513919              1.0513919
+      BS_nonparametric_upper
+2.5%               0.6433850
+2.5%1              0.7343354
+2.5%2              2.5814996
+2.5%3              2.8394813
+2.5%4              1.0415495</code></pre>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
