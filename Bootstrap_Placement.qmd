@@ -327,7 +327,7 @@ results_table <- do.call(rbind, lapply(names(results), function(name) {
 print(head(results_table,5))
 
 # Save the table as a CSV file
-write.csv(results_table, "results_table_with_params.csv", row.names = FALSE)
+#write.csv(results_table, "results_table_with_params.csv", row.names = FALSE)
 
 ```
 
