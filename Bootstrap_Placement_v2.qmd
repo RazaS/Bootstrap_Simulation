@@ -117,27 +117,23 @@ $$
 
 ##### 3) Likelihood Interval Based on Likelihood Ratio
 
-The likelihood interval based on the likelihood ratio uses the negative log-likelihood function: $$
-  \ell(\mu) = -\sum_{i=1}^n \log \left( f(x_i; \mu, \sigma) \right)
-  $$
-
-Where ( f(x_i; \mu, \sigma) ) is the normal PDF:
+Negative Log-Likelihood Function:
 
 $$
-  f(x_i; \mu, \sigma) = \frac{1}{\sqrt{2\pi}\sigma} \exp\left( -\frac{(x_i - \mu)^2}{2\sigma^2} \right)
-  $$
+\ell(\mu) = -\sum_{i=1}^n \log \left( f(x_i; \mu, \sigma) \right)
+$$
 
-The MLE for ( \mu ) minimizes ( \ell(\mu) ):
+Likelihood Ratio Criterion: For a confidence level (1 - \alpha), the likelihood ratio interval satisfies:
 
 $$
-  \hat{\mu} = \arg\min_{\mu} \ell(\mu)
-  $$
+2 \left[ \ell(\hat{\mu}) - \ell(\mu) \right] \leq \chi^2_{1, 1-\alpha}
+$$
 
-The likelihood interval is calculated as:
+Interval Bounds: The bounds of the interval are the values of \mu that satisfy this equation. This requires solving:
 
 $$
-  \text{Likelihood Interval (Likelihood Ratio)} = \left[ \hat{\mu} - 1.96 \times SE, \hat{\mu} + 1.96 \times SE \right]
-  $$
+\ell(\mu) = \ell(\hat{\mu}) - \frac{1}{2} \chi^2_{1, 1-\alpha}
+$$
 
 ##### 4) Non-Parametric Bootstrap Interval
 
@@ -166,13 +162,31 @@ calculate_likelihood_interval_mle <- function(data) {
 
 # 3) Likelihood Interval Based on Likelihood Ratio
 calculate_likelihood_interval_lr <- function(data) {
+  # Negative log-likelihood function
   log_likelihood <- function(mean) {
     -sum(dnorm(data, mean = mean, sd = sd(data), log = TRUE))
   }
+  
+  # Find MLE for the mean (minimum of the negative log-likelihood)
   mle_mean <- optimize(log_likelihood, interval = range(data))$minimum
-  n <- length(data)
-  se <- sd(data) / sqrt(n)
-  c(mle_mean - 1.96 * se, mle_mean + 1.96 * se)
+  
+  # Log-likelihood value at the MLE
+  mle_log_likelihood <- log_likelihood(mle_mean)
+  
+  # Criterion for likelihood ratio (chi-squared value for 95% CI, 1 degree of freedom)
+  threshold <- mle_log_likelihood + 0.5 * qchisq(0.95, df = 1)
+  
+  # Solve for lower and upper bounds where the log-likelihood equals the threshold
+  find_bound <- function(direction) {
+    uniroot(function(mu) log_likelihood(mu) - threshold,
+            interval = if (direction == "lower") c(min(data), mle_mean) else c(mle_mean, max(data)))$root
+  }
+  
+  lower_bound <- find_bound("lower")
+  upper_bound <- find_bound("upper")
+  
+  # Return the likelihood interval
+  c(lower_bound, upper_bound)
 }
 
 # 4) Non-Parametric Bootstrap Interval
@@ -238,13 +252,16 @@ bootstrap_intervals <- function(data, m) {
   for (i in 1:m) {
     sample_data <- sample(data, size = n, replace = TRUE)
     means[i] <- mean(sample_data)
+    bootstrap_se <- sd(means)
+
   }
   
   list(
     t_interval = calculate_t_interval(means),
     likelihood_interval_mle = calculate_likelihood_interval_mle(data),
     likelihood_interval_lr = calculate_likelihood_interval_lr(data),
-    nonparametric_interval = calculate_nonparametric_interval(means)
+    nonparametric_interval = calculate_nonparametric_interval(means),
+    bootstrap_se = bootstrap_se
   )
 
   
@@ -302,7 +319,7 @@ results_table <- do.call(rbind, lapply(names(results), function(name) {
   params <- distribution_params[[dist_name]]
   
   BS_mean <- mean(intervals$t_interval)
-
+  bootstrap_se <- intervals$bootstrap_se
   
   # Create a row
   data.frame(
@@ -311,6 +328,7 @@ results_table <- do.call(rbind, lapply(names(results), function(name) {
     distribution = dist_name,
     expected_params = paste(names(params), unlist(params), sep = "=", collapse = ", "),
     bs_mean = BS_mean,
+    bs_se = bootstrap_se,
     t_interval_lower = intervals$t_interval[1],
     t_interval_upper = intervals$t_interval[2],
     likelihood_mle_lower = intervals$likelihood_interval_mle[1],
@@ -347,7 +365,8 @@ combine_bootstrap_and_analytic <- function(bootstrap_results, analytic_table) {
     intervals <- bootstrap_results[[name]]
     
     BS_mean <- mean(intervals$t_interval)
-    
+    BS_se <- intervals$bootstrap_se
+
     # Match with analytic values
     analytic_row <- analytic_table[
       analytic_table$n == n_value & analytic_table$distribution == dist_name, ]
@@ -362,6 +381,7 @@ combine_bootstrap_and_analytic <- function(bootstrap_results, analytic_table) {
       analytic_t_interval_lower = analytic_row$analytic_t_interval_lower,
       analytic_t_interval_upper = analytic_row$analytic_t_interval_upper,
       bs_mean = BS_mean,
+      bs_se = BS_se,
       t_interval_lower = intervals$t_interval[1],
       t_interval_upper = intervals$t_interval[2],
       likelihood_mle_lower = intervals$likelihood_interval_mle[1],
@@ -384,7 +404,7 @@ combined_table <- combined_table[, c(
   "m", "n", "distribution",
   "analytic_mean", "bs_mean", 
   "t_interval_lower", "analytic_t_interval_lower", "t_interval_upper", "analytic_t_interval_upper",
-  "analytic_se",
+  "analytic_se", 'bs_se',
   "likelihood_mle_lower", "likelihood_lr_lower", "nonparametric_lower",
   "likelihood_mle_upper", "likelihood_lr_upper", "nonparametric_upper"
 )]
@@ -393,7 +413,7 @@ combined_table <- combined_table[, c(
 colnames(combined_table) <- sub("^(t_interval|likelihood_mle|likelihood_lr|nonparametric)_", "BS_\\1_", colnames(combined_table))
 
 # Save the rearranged table as a CSV file
-write.csv(combined_table, "rearranged_combined_bootstrap_analytic_table.csv", row.names = FALSE)
+write.csv(combined_table, "rearranged_combined_bootstrap_analytic_table_v2.csv", row.names = FALSE)
 
 # Display the combined table
 print(head(combined_table,5))
